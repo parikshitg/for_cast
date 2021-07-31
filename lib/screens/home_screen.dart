@@ -66,7 +66,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ForCast', style: TextStyle(fontSize: 28, fontFamily: 'Ethnocentric',),),
+        centerTitle: false,
+        title: Text('ForCast', style: TextStyle(fontSize: 24, fontFamily: 'Ethnocentric',),),
+        actions: [
+            IconButton(
+              onPressed: () {
+                print("add button pressed");
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => search_screen(),
+                //   ),
+                // );
+              },
+              icon: Icon(Icons.add),
+              iconSize: 40,
+            ),
+          ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -78,24 +95,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   shrinkWrap: true,
                   itemBuilder: (context, i){
                     return Card(
-
-                      child: FutureBuilder<City>(
-                        future: futureCity,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ListTile(
-                              title: Text(cities[i].toString()),
-                              subtitle: Text(snapshot.data.temp.toString())
-                            );
-                          } else if (snapshot.hasError) {
-                            print('${snapshot.error}');
-                            // return Text('${snapshot.error}');
-                          }
-
-                          // By default, show a loading spinner.
-                          return const CircularProgressIndicator();
-                        },)
-                    );
+                      margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0), // if you need this
+                        side: BorderSide(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Column(
+                        children: [
+                          Row(children: [ Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16))]),
+                          SizedBox(height:8.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [ 
+                            Text(cities[i], style: TextStyle(fontSize:24.0,fontWeight: FontWeight.w400)),
+                            Text('32°C', style: TextStyle(fontSize: 24.0),),
+                          ]),
+                        ],
+                      ),
+                    ),
+                  );
                   },
                 )
               )
