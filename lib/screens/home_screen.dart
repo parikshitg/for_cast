@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 const cities = [
-  'Mumbai', 
+  'London', 
   'Delhi', 
   'Calcutta', 
-  'Los-Angeles', 
-  'London', 
+  // 'Los-Angeles', 
+  'Mumbai', 
   'Sydney', 
   'Tokyo', 
-  'Rio', 
+  'Rio',
   'Qatar', 
-  'Berlin'
+  'Berlin',
 ];
+
+const apiKey = 'd6b07e0f9e70d25e32a75b4db5b5aac7';
+const unit= 'metric';
 
 class City{
   final String base;
@@ -36,15 +39,24 @@ class City{
   }
 }
 
-Future<City> fetchCity() async {
-  var url = 'https://api.openweathermap.org/data/2.5/weather?q=London&appid=d6b07e0f9e70d25e32a75b4db5b5aac7&units=metric';
+List<City> cityList = [];
+
+Future<List<City>> fetchCity() async {
   
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode != 200) {
-    throw Exception('Failed to load album');
+  for (var i = 0; i < cities.length; i++){
+    print('---------- fetchCity ----- called ------------ : ${cities[i]}');
+
+    var url = 'https://api.openweathermap.org/data/2.5/weather?q=${cities[i]}&appid=$apiKey&units=$unit';
+    
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load album');
+    }
+    print(' $i ==== ${response.body}');
+    cityList.add(City.fromJson(jsonDecode(response.body)));
   }
 
-  return City.fromJson(jsonDecode(response.body));
+  return cityList;
 }
 
 class HomeScreen extends StatefulWidget {
@@ -54,7 +66,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<City> futureCity;
+  Future<List<City>> futureCity;
 
   @override
   void initState() {
@@ -81,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // );
               },
               icon: Icon(Icons.add),
-              iconSize: 40,
+              iconSize: 24.0,
             ),
           ],
       ),
@@ -107,7 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class CityCard extends StatelessWidget {
-
   final String cityName;
 
   CityCard(this.cityName);
@@ -127,13 +138,13 @@ class CityCard extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         child: Column(
         children: [
-          Row(children: [ Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16))]),
+          Row(children: [ Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16.0))]),
           SizedBox(height:8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [ 
-            Text(cityName, style: TextStyle(fontSize:24.0,fontWeight: FontWeight.w400)),
-            Text('32°C', style: TextStyle(fontSize: 24.0),),
+            Text(cityName, style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.w400)),
+            Text('30°C', style: TextStyle(fontSize: 24.0),),
           ]),
         ],
       ),
