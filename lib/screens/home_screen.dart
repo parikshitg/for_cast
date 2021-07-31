@@ -94,31 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: cities.length,
                   shrinkWrap: true,
                   itemBuilder: (context, i){
-                    return Card(
-                      margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0), // if you need this
-                        side: BorderSide(
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 1,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Column(
-                        children: [
-                          Row(children: [ Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16))]),
-                          SizedBox(height:8.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [ 
-                            Text(cities[i], style: TextStyle(fontSize:24.0,fontWeight: FontWeight.w400)),
-                            Text('32°C', style: TextStyle(fontSize: 24.0),),
-                          ]),
-                        ],
-                      ),
-                    ),
-                  );
+                    return CityCard(cities[i]);
                   },
                 )
               )
@@ -127,5 +103,41 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       )
     );
+  }
+}
+
+class CityCard extends StatelessWidget {
+
+  final String cityName;
+
+  CityCard(this.cityName);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+        side: BorderSide(
+          color: Colors.grey.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+        children: [
+          Row(children: [ Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16))]),
+          SizedBox(height:8.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [ 
+            Text(cityName, style: TextStyle(fontSize:24.0,fontWeight: FontWeight.w400)),
+            Text('32°C', style: TextStyle(fontSize: 24.0),),
+          ]),
+        ],
+      ),
+    ),
+                  );
   }
 }
