@@ -3,43 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../widgets/city_card.dart';
-
-const cities = [
-  'London', 
-  'Delhi', 
-  'Calcutta', 
-  // 'Los-Angeles', 
-  'Mumbai', 
-  'Sydney', 
-  'Tokyo', 
-  'Rio',
-  'Qatar', 
-  'Berlin',
-];
-
-const apiKey = 'd6b07e0f9e70d25e32a75b4db5b5aac7';
-const unit= 'metric';
-
-class City{
-  final String name;
-  final double temp;
-
-  City({
-    this.name,
-    this.temp,
-  });
-
-  factory City.fromJson(Map<String, dynamic> json) {
-    return City(
-      name:json['name'],
-      temp: json['main']['temp'],
-    );
-  }
-}
+import '../classes/city.dart';
+import '../config/data.dart';
+import '../config/config.dart';
 
 List<City> cityList = [];
 
 Future<List<City>> fetchCity() async {
+  if (apiKey == ''){
+    print('please use valid token!!');
+    return cityList;
+  }
+
   for (var i = 0; i < cities.length; i++){
     var url = 'https://api.openweathermap.org/data/2.5/weather?q=${cities[i]}&appid=$apiKey&units=$unit';
     
