@@ -20,20 +20,17 @@ const apiKey = 'd6b07e0f9e70d25e32a75b4db5b5aac7';
 const unit= 'metric';
 
 class City{
-  final String base;
-  final int visibility;
+  final String name;
   final double temp;
 
   City({
-    this.base,
-    this.visibility,
+    this.name,
     this.temp,
   });
 
   factory City.fromJson(Map<String, dynamic> json) {
     return City(
-      base: json['base'],
-      visibility: json['visibility'],
+      name:json['name'],
       temp: json['main']['temp'],
     );
   }
@@ -42,17 +39,14 @@ class City{
 List<City> cityList = [];
 
 Future<List<City>> fetchCity() async {
-  
   for (var i = 0; i < cities.length; i++){
-    print('---------- fetchCity ----- called ------------ : ${cities[i]}');
-
     var url = 'https://api.openweathermap.org/data/2.5/weather?q=${cities[i]}&appid=$apiKey&units=$unit';
     
     final response = await http.get(Uri.parse(url));
     if (response.statusCode != 200) {
       throw Exception('Failed to load album');
     }
-    print(' $i ==== ${response.body}');
+    
     cityList.add(City.fromJson(jsonDecode(response.body)));
   }
 
@@ -99,19 +93,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                child: ListView.builder(
-                  itemCount: cities.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, i){
-                    return CityCard(cities[i]);
-                  },
-                )
-              )
-            ],
-          ),
+          child: FutureBuilder<List<City>>(
+            future: futureCity,
+            builder:(context, citys){
+              if (!citys.hasData) {
+                  return Center(child: CircularProgressIndicator());
+              }
+              return Column(
+                children: [
+                  Container(
+                    child: ListView.builder(
+                      itemCount: cityList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, i){
+                        return CityCard(cityList[i].name, cityList[i].temp);
+                      },
+                    )
+                  )
+                ],
+              );
+            }
+          )
         )
       )
     );
@@ -120,8 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class CityCard extends StatelessWidget {
   final String cityName;
+  final double temp;
 
-  CityCard(this.cityName);
+  CityCard(this.cityName, this.temp);
 
   @override
   Widget build(BuildContext context) {
@@ -144,11 +147,11 @@ class CityCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [ 
             Text(cityName, style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.w400)),
-            Text('30°C', style: TextStyle(fontSize: 24.0),),
+            Text('$temp°C', style: TextStyle(fontSize: 24.0),),
           ]),
         ],
       ),
     ),
-                  );
+    );
   }
 }
