@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CityCard extends StatelessWidget {
   final String cityName;
   final double temp;
+  final Icon weatherIcon;
 
-  CityCard(this.cityName, this.temp);
+  CityCard(this.cityName, this.temp, this.weatherIcon);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,12 @@ class CityCard extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         child: Column(
         children: [
-          Row(children: [ Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16.0))]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [ 
+            Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16.0)),
+            weatherIcon,
+          ]),
           SizedBox(height:8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,4 +1,4 @@
-const cities = [
+const defaultCities = [
   'London', 
   'Delhi', 
   'Calcutta', 

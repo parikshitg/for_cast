@@ -7,6 +7,7 @@ import '../classes/city.dart';
 import '../config/data.dart';
 import '../config/config.dart';
 import './detail_screen.dart';
+import '../utils/weather_icon.dart';
 
 List<City> cityList = [];
 
@@ -16,14 +17,14 @@ Future<List<City>> fetchCity() async {
     return cityList;
   }
 
-  for (var i = 0; i < cities.length; i++){
-    var url = 'https://api.openweathermap.org/data/2.5/weather?q=${cities[i]}&appid=$apiKey&units=$unit';
+  for (var i = 0; i < defaultCities.length; i++){
+    var url = '$baseUrl?q=${defaultCities[i]}&appid=$apiKey&units=$unit';
     
     final response = await http.get(Uri.parse(url));
     if (response.statusCode != 200) {
       throw Exception('Failed to load album');
     }
-    
+  
     cityList.add(City.fromJson(jsonDecode(response.body)));
   }
 
@@ -81,7 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: cityList.length,
                       shrinkWrap: true,
                       itemBuilder: (context, i){
-                        return CityCard(cityList[i].name, cityList[i].temp);
+                        return CityCard(
+                          cityList[i].name, 
+                          cityList[i].temp, 
+                          getWeatherIcon(cityList[i].weather.toLowerCase())
+                        );
                       },
                     )
                   )
