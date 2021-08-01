@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../utils/time.dart';
 
 class CityCard extends StatelessWidget {
   final String cityName;
   final double temp;
   final Icon weatherIcon;
+  final int timezone;
+  final String country;
 
-  CityCard(this.cityName, this.temp, this.weatherIcon);
+  CityCard(this.cityName, this.temp, this.weatherIcon, this.timezone, this.country);
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +28,24 @@ class CityCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [ 
-            Text('06:00 PM', style: TextStyle(color: Colors.grey[600], fontSize:16.0)),
+            Text('${getCityLocalTime(timezone)}', style: TextStyle(color: Colors.grey[600], fontSize:16.0)),
             weatherIcon,
           ]),
           SizedBox(height:8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [ 
-            Text(cityName, style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.w400)),
-            Text('$temp°C', style: TextStyle(fontSize: 24.0),),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 0.0),
+                    child:Text(cityName, style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.w400))
+                  ),
+                  Text('($country)', style: TextStyle(fontSize: 16.0, color: Colors.grey)),
+                ]),
+            Text('${temp.round()}°C', style: TextStyle(fontSize: 24.0),),
           ]),
         ],
       ),

@@ -7,7 +7,7 @@ import '../classes/city.dart';
 import '../config/data.dart';
 import '../config/config.dart';
 import './detail_screen.dart';
-import '../utils/weather_icon.dart';
+import '../utils/icon.dart';
 
 List<City> cityList = [];
 
@@ -85,7 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         return CityCard(
                           cityList[i].name, 
                           cityList[i].temp, 
-                          getWeatherIcon(cityList[i].weather.toLowerCase())
+                          getWeatherIcon(cityList[i].weather.toLowerCase()),
+                          cityList[i].timezone,
+                          cityList[i].country,
                         );
                       },
                     )
