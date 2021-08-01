@@ -6,6 +6,7 @@ import '../widgets/city_card.dart';
 import '../classes/city.dart';
 import '../config/data.dart';
 import '../config/config.dart';
+import './detail_screen.dart';
 
 List<City> cityList = [];
 
@@ -53,14 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
             IconButton(
               onPressed: () {
-                print("add button pressed");
-
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => search_screen(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailScreen(),
+                  ),
+                );
               },
               icon: Icon(Icons.add),
               iconSize: 24.0,
